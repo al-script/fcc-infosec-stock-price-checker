@@ -7,9 +7,10 @@ chai.use(chaiHttp);
 
 suite("Functional Tests", function () {
   let likesFirst, likesSecond;
-  
+
   // Viewing one stock: GET request to /api/stock-prices/
-  test("Viewing one stock: GET request to /api/stock-prices/", function (done) { // had to pass in and then call done... perhaps need to do this on my other projects as well
+  test("Viewing one stock: GET request to /api/stock-prices/", function (done) {
+    // had to pass in and then call done... perhaps need to do this on my other projects as well
     this.timeout(10000);
     chai
       .request(server)
@@ -42,8 +43,9 @@ suite("Functional Tests", function () {
         );
         done();
         // setTimeout(()=>{console.log("waiting...")}, 4000);
-      }).timeout(5000);
-  })
+      })
+      .timeout(5000);
+  });
 
   // Viewing one stock and liking it: GET request to /api/stock-prices/
   test("Viewing one stock and liking it: GET request to /api/stock-prices/", function (done) {
@@ -81,8 +83,9 @@ suite("Functional Tests", function () {
         done();
         // assert.equal(likesAfter, likesBefore + 1, "likes should be incremented by one") //but this may break if run the test from the same IP... so perhaps don't need this test
         // setTimeout(()=>{console.log("waiting...")}, 4000);
-      }).timeout(5000);
-  })
+      })
+      .timeout(5000);
+  });
 
   // Viewing the same stock and liking it again: GET request to /api/stock-prices/
   test("Viewing the same stock and liking it again: GET request to /api/stock-prices/", function (done) {

@@ -146,7 +146,7 @@ module.exports = function (app) {
       // await time(1000);
       // console.log("Return the final object");
       // res.json({ stockData: stockDataToReturn });
-      return { "stockData": stockDataToReturn }
+      return { stockData: stockDataToReturn };
     } catch (error) {
       console.log("Error:", error);
     } finally {
