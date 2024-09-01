@@ -95,10 +95,10 @@ module.exports = function (app) {
       // console.log("Define price data");
       let price1, price2;
       if (stockSymbol2) {
-        price1 = apiData.stockData[0].price;
-        price2 = apiData.stockData[1].price;
+        price1 = apiData.stockData[0].price || 0;
+        price2 = apiData.stockData[1].price || 0;
       } else {
-        price1 = apiData.stockData.price;
+        price1 = apiData.stockData.price || 0;
       }
 
       // console.log(price1);
