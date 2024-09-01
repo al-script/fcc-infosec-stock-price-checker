@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Stock Price Checker</title>
+    <title>Stock Price Checker | al-script x freeCodeCamp.org</title>
     <link
       id="favicon"
       rel="icon"
@@ -11,14 +11,133 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
+      crossorigin="anonymous"
+    />
     <link rel="stylesheet" href="./public/style.css" />
   </head>
   <body>
-    <header>
-      <h1>ISQA_5 - Nasdaq Stock Price Checker</h1>
-    </header>
+    <!-- Bootstrap -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+      crossorigin="anonymous"
+    ></script>
+    <div>
+
+      <!-- Top navbar -->
+      <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+          <a
+            class="navbar-brand"
+            href="https://replit.com/@al-script"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><div class="display-5">AS al-script</div></a
+          >
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarText"
+            aria-controls="navbarText"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 mx-auto">
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  href="https://Stock-Price-Checker-freeCodeCamp.al-script.repl.co"
+                  target="_top"
+                  rel="noopener noreferrer"
+                  >Stock Price Checker</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  href="https://Anonymous-Message-Board-freeCodeCamp.al-script.repl.co"
+                  target="_top"
+                  rel="noopener noreferrer"
+                  >Anonymous Message Board</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  href="https://Port-Scanner-freeCodeCamp.al-script.repl.co"
+                  target="_top"
+                  rel="noopener noreferrer"
+                  >Port Scanner</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  href="https://SHA-1-Password-Cracker-freeCodeCamp.al-script.repl.co"
+                  target="_top"
+                  rel="noopener noreferrer"
+                  >SHA-1 Password Cracker</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  href="https://Secure-Real-Time-Multiplayer-Game-freeCodeCamp.al-script.repl.co"
+                  target="_top"
+                  rel="noopener noreferrer"
+                  >Secure Real Time Multiplayer Game</a
+                >
+              </li>
+            </ul>
+            <span class="navbar-text">
+              <a
+                class="navbar-text"
+                href="https://www.freecodecamp.org/learn/information-security/#information-security-projects"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="https://design-style-guide.freecodecamp.org/downloads/fcc_secondary_large.svg"
+                  alt=""
+                  width="218.75"
+                  height="25"
+                  class="d-inline align-text-top"
+                />
+              </a>
+              <a
+                class="nav-link"
+                href="https://www.freecodecamp.org/learn/information-security/#information-security-projects"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Information Security Projects</a
+              >
+            </span>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Responsive container -->
+      <div class="d-flex min-vh-100">
+        <div class="container d-flex align-items-center justify-content-center">
+          <div class="col-12 p-3">
+            <div class="row p-3">
+      
+    
+      <div class="display-1">Nasdaq Stock Price Checker</div>
+
+              <div class="card shadow p-1 gy-3">
+                <div class="card-body">
+    
     <div id="userstories">
-      <h3>Example usage:</h3>
+      <h2>Example usage:</h2>
       <code>/api/stock-prices?stock=GOOG</code>
       <br />
       <code>/api/stock-prices?stock=GOOG&amp;like=true</code>
@@ -34,27 +153,196 @@
         {"stockData":[{"stock":"MSFT","price":62.30,"rel_likes":-1},{"stock":"GOOG","price":786.90,"rel_likes":1}]}
       </code>
     </div>
-    <hr class="p-50" />
-    <div id="testui">
-      <h2 class="text-align-left">Front-End:</h2>
-      <h3>Get single price and total likes</h3>
-      <form id="testForm2" class="border">
-        <input type="text" name="stock" placeholder="GOOG" required="" />
-        <input type="checkbox" name="like" value="true" /> Like?
-        <br />
-        <button type="submit">Get Price!</button>
-      </form>
-      <h3>Compare and get relative likes</h3>
-      <form id="testForm" class="border">
-        <input type="text" name="stock" placeholder="GOOG" required="" />
-        <input type="text" name="stock" placeholder="MSFT" required="" />
-        <input type="checkbox" name="like" value="true" /> Like both?
-        <br />
-        <button type="submit">Get Price!</button>
-      </form>
-      <code id="jsonResult"></code>
-    </div>
-    <hr class="m-50 mt-200" />
+
+                </div>
+              </div>
+
+              
+    
+          <div class="card shadow p-1 gy-3">
+                <div class="card-body">
+              
+   <div id="testui">
+                    <h2 class="text-align-left">Front-End:</h2>
+
+                    <h3>Get single price and total likes</h3>
+                    <form id="testForm2" class="row row-cols-lg-auto g-3 align-items-center justify-content-center">
+                      <div class="col-12">
+                      <input
+                        class="form-control"
+                        type="text"
+                        name="stock"
+                        placeholder="GOOG"
+                        required=""
+                      />
+                      </div>
+                      <div class="col-12">
+                      <input type="checkbox" name="like" value="true" /> Like?
+                      </div>
+                      <div class="col-12">
+                      <button class="btn btn-primary" type="submit">
+                        Get Price!
+                      </button>
+                      </div>
+                    </form>
+
+     <hr class="border border-light border-3 opacity-25">
+
+                    <h3>Compare and get relative likes</h3>
+                    <form id="testForm" class="row row-cols-lg-auto g-3 align-items-center justify-content-center mb-3">
+                      <div class="col-12">
+                      <input
+                        class="form-control"
+                        type="text"
+                        name="stock"
+                        placeholder="GOOG"
+                        required=""
+                      />
+                      </div>
+                      <div class="col-12">
+                      <input
+                        class="form-control"
+                        type="text"
+                        name="stock"
+                        placeholder="MSFT"
+                        required=""
+                      />
+                      </div>
+                      <div class="col-12">
+                      <input
+                        class="form-control-input"
+                        type="checkbox"
+                        name="like"
+                        value="true"
+                        id="likeboth"
+                      />
+                      <label class="form-control-label" for="likeboth"
+                        >Like both?</label
+                      >
+                      </div>
+                      <div class="col-12">
+                      <button class="btn btn-primary mb-1" type="submit">
+                        Get Price!
+                      </button>
+                      </div>
+                    </form>
+
+                    <code id="jsonResult"></code>
+                  </div>
+
+                </div>
+          </div>
+
+              
+            </div>
+            </div>
+          </div>
+        </div>
+
+    <!-- Footer -->
+      <nav class="navbar bg-light shadow-sm">
+        <div class="container-fluid">
+          <a
+            class="navbar-brand display-6"
+            href="https://replit.com/@al-script"
+            target="_blank"
+            rel="noopener noreferrer"
+            >al-script x freeCodeCamp</a
+          >
+          <span class="navbar-text">
+            <a class="navbar-brand display-6 d-inline align-text-center"
+              >Built with</a
+            >
+            <a
+              class="navbar-brand"
+              href="https://nodejs.org/en/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="https://seeklogo.com/images/N/nodejs-logo-FBE122E377-seeklogo.com.png"
+                alt="Node.js"
+                width=""
+                height="24"
+                class="d-inline align-text-top"
+              />
+            </a>
+            <a
+              class="navbar-brand"
+              href="https://expressjs.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="https://www.pngfind.com/pngs/m/136-1363736_express-js-icon-png-transparent-png.png"
+                width=""
+                height="24"
+                class="d-inline align-text-top"
+              />
+            </a>
+            <a
+              class="navbar-brand"
+              href="https://www.mongodb.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="https://www.svgrepo.com/show/331488/mongodb.svg"
+                alt="MongoDB"
+                width=""
+                height="24"
+                class="d-inline align-text-top"
+              />
+            </a>
+
+            <!--             <a
+              class="navbar-brand"
+              href="https://mochajs.org"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Mocha_logo.svg/1200px-Mocha_logo.svg.png"
+                width=""
+                height="24"
+                class="d-inline align-text-top"
+              />
+            </a> -->
+            <a
+              class="navbar-brand"
+              href="https://www.chaijs.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="https://www.chaijs.com/img/chai-logo-small.png"
+                width=""
+                height="24"
+                class="d-inline align-text-top"
+              />
+            </a>
+
+            <a
+              class="navbar-brand"
+              href="https://getbootstrap.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="https://getbootstrap.com/docs/5.2/assets/brand/bootstrap-logo.svg"
+                alt="Bootstrap"
+                width=""
+                height="24"
+                class="d-inline align-text-top"
+              />
+            </a>
+          </span>
+        </div>
+      </nav>
+    
+
+      
     <script src="/public/script.js"></script>
+    </div>
   </body>
 </html>
