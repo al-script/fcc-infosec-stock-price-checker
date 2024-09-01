@@ -13,6 +13,7 @@ const app = express();
 const helmet = require("helmet"); // ***
 
 app.use("/public", express.static(process.cwd() + "/public"));
+app.use("/assets", express.static(process.cwd() + "/assets"));
 
 app.use(cors({ origin: "*" })); //For FCC testing purposes only
 
