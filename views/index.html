@@ -17,7 +17,7 @@
       integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="./public/style.css" />
+    <link rel="stylesheet" href="/public/styles.css" />
   </head>
   <body>
     <!-- Bootstrap -->
@@ -27,7 +27,6 @@
       crossorigin="anonymous"
     ></script>
     <div>
-
       <!-- Top navbar -->
       <nav class="navbar navbar-expand-lg bg-light">
         <div class="container-fluid">
@@ -129,117 +128,117 @@
         <div class="container d-flex align-items-center justify-content-center">
           <div class="col-12 p-3">
             <div class="row p-3">
-      
-    
-      <div class="display-1">Nasdaq Stock Price Checker</div>
+              <div class="display-1">Nasdaq Stock Price Checker</div>
 
               <div class="card shadow p-1 gy-3">
                 <div class="card-body">
-    
-    <div id="userstories">
-      <h2>Example usage:</h2>
-      <code>/api/stock-prices?stock=GOOG</code>
-      <br />
-      <code>/api/stock-prices?stock=GOOG&amp;like=true</code>
-      <br />
-      <code>/api/stock-prices?stock=GOOG&amp;stock=MSFT</code>
-      <br />
-      <code>/api/stock-prices?stock=GOOG&amp;stock=MSFT&amp;like=true</code>
-      <br />
-      <h3>Example return:</h3>
-      <code>{"stockData":{"stock":"GOOG","price":786.90,"likes":1}}</code>
-      <br />
-      <code>
-        {"stockData":[{"stock":"MSFT","price":62.30,"rel_likes":-1},{"stock":"GOOG","price":786.90,"rel_likes":1}]}
-      </code>
-    </div>
-
+                  <div id="userstories">
+                    <h2>Example usage:</h2>
+                    <code>/api/stock-prices?stock=GOOG</code>
+                    <br />
+                    <code>/api/stock-prices?stock=GOOG&amp;like=true</code>
+                    <br />
+                    <code>/api/stock-prices?stock=GOOG&amp;stock=MSFT</code>
+                    <br />
+                    <code
+                      >/api/stock-prices?stock=GOOG&amp;stock=MSFT&amp;like=true</code
+                    >
+                    <br />
+                    <h3>Example return:</h3>
+                    <code
+                      >{"stockData":{"stock":"GOOG","price":786.90,"likes":1}}</code
+                    >
+                    <br />
+                    <code>
+                      {"stockData":[{"stock":"MSFT","price":62.30,"rel_likes":-1},{"stock":"GOOG","price":786.90,"rel_likes":1}]}
+                    </code>
+                  </div>
                 </div>
               </div>
 
-              
-    
-          <div class="card shadow p-1 gy-3">
+              <div class="card shadow p-1 gy-3">
                 <div class="card-body">
-              
-   <div id="testui">
+                  <div id="testui">
                     <h2 class="text-align-left">Front-End:</h2>
 
                     <h3>Get single price and total likes</h3>
-                    <form id="testForm2" class="row row-cols-lg-auto g-3 align-items-center justify-content-center">
+                    <form
+                      id="testForm2"
+                      class="row row-cols-lg-auto g-3 align-items-center justify-content-center"
+                    >
                       <div class="col-12">
-                      <input
-                        class="form-control"
-                        type="text"
-                        name="stock"
-                        placeholder="GOOG"
-                        required=""
-                      />
+                        <input
+                          class="form-control"
+                          type="text"
+                          name="stock"
+                          placeholder="GOOG"
+                          required=""
+                        />
                       </div>
                       <div class="col-12">
-                      <input type="checkbox" name="like" value="true" /> Like?
+                        <input type="checkbox" name="like" value="true" /> Like?
                       </div>
                       <div class="col-12">
-                      <button class="btn btn-primary" type="submit">
-                        Get Price!
-                      </button>
+                        <button class="btn btn-primary" type="submit">
+                          Get Price!
+                        </button>
                       </div>
                     </form>
 
-     <hr class="border border-light border-3 opacity-25">
+                    <hr class="border border-light border-3 opacity-25" />
 
                     <h3>Compare and get relative likes</h3>
-                    <form id="testForm" class="row row-cols-lg-auto g-3 align-items-center justify-content-center mb-3">
+                    <form
+                      id="testForm"
+                      class="row row-cols-lg-auto g-3 align-items-center justify-content-center mb-3"
+                    >
                       <div class="col-12">
-                      <input
-                        class="form-control"
-                        type="text"
-                        name="stock"
-                        placeholder="GOOG"
-                        required=""
-                      />
+                        <input
+                          class="form-control"
+                          type="text"
+                          name="stock"
+                          placeholder="GOOG"
+                          required=""
+                        />
                       </div>
                       <div class="col-12">
-                      <input
-                        class="form-control"
-                        type="text"
-                        name="stock"
-                        placeholder="MSFT"
-                        required=""
-                      />
+                        <input
+                          class="form-control"
+                          type="text"
+                          name="stock"
+                          placeholder="MSFT"
+                          required=""
+                        />
                       </div>
                       <div class="col-12">
-                      <input
-                        class="form-control-input"
-                        type="checkbox"
-                        name="like"
-                        value="true"
-                        id="likeboth"
-                      />
-                      <label class="form-control-label" for="likeboth"
-                        >Like both?</label
-                      >
+                        <input
+                          class="form-control-input"
+                          type="checkbox"
+                          name="like"
+                          value="true"
+                          id="likeboth"
+                        />
+                        <label class="form-control-label" for="likeboth"
+                          >Like both?</label
+                        >
                       </div>
                       <div class="col-12">
-                      <button class="btn btn-primary mb-1" type="submit">
-                        Get Price!
-                      </button>
+                        <button class="btn btn-primary mb-1" type="submit">
+                          Get Price!
+                        </button>
                       </div>
                     </form>
 
                     <code id="jsonResult"></code>
                   </div>
-
                 </div>
-          </div>
-
-              
-            </div>
+              </div>
             </div>
           </div>
         </div>
+      </div>
 
-    <!-- Footer -->
+      <!-- Footer -->
       <nav class="navbar bg-light shadow-sm">
         <div class="container-fluid">
           <a
@@ -339,10 +338,8 @@
           </span>
         </div>
       </nav>
-    
 
-      
-    <script src="/public/script.js"></script>
+      <script src="/public/scripts.js"></script>
     </div>
   </body>
 </html>
