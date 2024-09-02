@@ -192,8 +192,8 @@ module.exports = function (app) {
         sanitized = true;
         sanitizedRequest = {
           stock: req.query.stock,
-          like: req.query.like
-        }
+          like: req.query.like,
+        };
       } catch (e) {}
 
       if (sanitized) {
@@ -267,10 +267,56 @@ module.exports = function (app) {
         }
       }
 
+      async function processAndReturnStockData(sanitizedRequest) {
+        const stockSymbol = sanitizedRequest.stock;
+        const like = sanitizedRequest.like || false;
+        const stockPrice = getStockPrice(stockSymbol);
+        const stockDatabaseData = handleStockDatabaseOperations(
+          stockSymbol,
+          like,
+          stockPrice,
+          req
+        );
+
+        return { stockData: stockDatabaseData };
+      }
+
+      async function joinMultipleStocks(stockDataOne, stockDataTwo) {
+        const joinedStockData = {
+          stockData: [
+            {
+              stock: stockDataOne.stock,
+              price: stockDataOne.price,
+              rel_likes: stockDataOne.likes - stockDataTwo.likes,
+            },
+            {
+              stock: stockDataTwo.stock,
+              price: stockDataTwo.price,
+              rel_likes: stockDataTwo.likes - stockDataOne.likes,
+            },
+          ],
+        };
+        return joinedStockData;
+      }
+
       // Handle request
       let processedRequest;
       try {
-      } catch (e) {}
+        if (typeof sanitizedRequest.stock == "string") {
+          processedRequest = processAndReturnStockData(sanitizedRequest);
+        } else if (typeof sanitizedRequest.stock == "array") {
+          const stockDataOne = processAndReturnStockData(
+            sanitizedRequest.stock[0]
+          );
+          const stockDataTwo = processAndReturnStockData(
+            sanitizedRequest.stock[1]
+          );
+          processedRequest = joinMultipleStocks(stockDataOne, stockDataTwo);
+        }
+      } catch (e) {
+        throw new Error("Processing failed");
+      }
+      return processedRequest;
     }
 
     try {
