@@ -161,8 +161,19 @@ module.exports = function (app) {
   // });
 
   // Improved API
-  
+
   async function handleStockPriceRequest(req) {
+    try {
+      validateRequest(req);
+      const sanitizedRequest = await sanitizeRequest(req);
+      const processedRequest = await processRequest(sanitizedRequest, req);
+      console.log("processed requst:", processedRequest);
+      return processedRequest;
+    } catch (error) {
+      throw new Error(error);
+    }
+
+    // Supporting functions
     async function validateRequest(req) {
       // Example queries:
       // { stock: 'GOOG' }
@@ -170,10 +181,9 @@ module.exports = function (app) {
       // { stock: [ 'GOOG', 'MSFT' ] }
       // { stock: [ 'GOOG', 'MSFT' ], like: 'true' }
 
-      let validated;
-
       // Handle validation
       // *** ASSUMING VALIDATION FOR TEST ***
+      let validated;
       try {
         validated = true;
       } catch (e) {
@@ -185,15 +195,15 @@ module.exports = function (app) {
       }
     }
     async function sanitizeRequest(req) {
-      let sanitized, sanitizedRequest;
-
       // Handle sanization
       // *** ASSUMING SANITIZATION FOR TEST ***
+      let sanitized, sanitizedRequest;
+
       try {
         sanitized = true;
         sanitizedRequest = {
           stock: req.query.stock,
-          like: req.query.like,
+          like: req.query.like ? true : false,
         };
       } catch (e) {}
 
@@ -203,16 +213,55 @@ module.exports = function (app) {
         throw new Error("Sanitization failed");
       }
     }
-    async function processRequest(sanitizedRequest) {
-      // Handle one or two stocks
+    async function processRequest(sanitizedRequest, req) {
       // Example return:
       // {"stockData":{"stock":"GOOG","price":786.90,"likes":1}}
       // {"stockData":[{"stock":"MSFT","price":62.30,"rel_likes":-1},{"stock":"GOOG","price":786.90,"rel_likes":1}]}
 
+      // Handle request
+      let processedRequest;
+      try {
+        if (typeof sanitizedRequest.stock == "string") {
+          processedRequest = await processAndReturnStockData(sanitizedRequest);
+        } else {
+          const stockDataOne = await processAndReturnStockData({
+            stock: sanitizedRequest.stock[0],
+            like: sanitizedRequest.like,
+          });
+          const stockDataTwo = await processAndReturnStockData({
+            stock: sanitizedRequest.stock[1],
+            like: sanitizedRequest.like,
+          });
+          processedRequest = await joinMultipleStocks(
+            stockDataOne,
+            stockDataTwo
+          );
+        }
+      } catch (e) {
+        throw new Error("Processing failed");
+      }
+      return processedRequest;
+
+      // Supporting functions
+      async function processAndReturnStockData(sanitizedRequest) {
+        const stockSymbol = sanitizedRequest.stock;
+        const like = sanitizedRequest.like || false;
+        const stockPrice = await getStockPrice(stockSymbol);
+        const stockDatabaseData = await handleStockDatabaseOperations(
+          stockSymbol,
+          like,
+          stockPrice,
+          req
+        );
+
+        return { stockData: stockDatabaseData };
+      }
+
       async function getStockPrice(stockSymbol) {
         const stockDataApiUrl = `https://stock-price-checker-proxy.freecodecamp.rocks/v1/stock/${stockSymbol}/quote`;
-        const stockData = await fetch(stockDataApiUrl);
-        const stockPrice = stockData.json().latestPrice;
+        const response = await fetch(stockDataApiUrl);
+        const stockData = await response.json();
+        const stockPrice = stockData.latestPrice;
         return stockPrice;
       }
 
@@ -246,21 +295,16 @@ module.exports = function (app) {
         return stockObject;
 
         async function likeStock(req) {
-          async function hashIp(req) {
-            const likerIp = req.socket.remoteAddress;
-            const hashedLikerIp = bcrypt.hashSync(likerIp, 12);
-            return hashedLikerIp;
-          }
-
-          const hashedLikerIp = await hashIp(req);
+          const likerIp = req.socket.remoteAddress;
 
           const alreadyLikedByIp = stockDatabaseEntry.IP.some((hash) => {
-            if (bcrypt.compareSync(hashedLikerIp, hash)) {
+            if (bcrypt.compareSync(likerIp, hash)) {
               return true;
             }
           });
 
           if (!alreadyLikedByIp) {
+            const hashedLikerIp = bcrypt.hashSync(likerIp, 12);
             stockDatabaseEntry.IP.push(hashedLikerIp);
             stockDatabaseEntry.likes++;
             return await stockDatabaseEntry.save();
@@ -268,73 +312,34 @@ module.exports = function (app) {
         }
       }
 
-      async function processAndReturnStockData(sanitizedRequest) {
-        const stockSymbol = sanitizedRequest.stock;
-        const like = sanitizedRequest.like || false;
-        const stockPrice = getStockPrice(stockSymbol);
-        const stockDatabaseData = handleStockDatabaseOperations(
-          stockSymbol,
-          like,
-          stockPrice,
-          req
-        );
-
-        return { stockData: stockDatabaseData };
-      }
-
       async function joinMultipleStocks(stockDataOne, stockDataTwo) {
         const joinedStockData = {
           stockData: [
             {
-              stock: stockDataOne.stock,
-              price: stockDataOne.price,
-              rel_likes: stockDataOne.likes - stockDataTwo.likes,
+              stock: stockDataOne.stockData.stock,
+              price: stockDataOne.stockData.price,
+              rel_likes:
+                stockDataOne.stockData.likes - stockDataTwo.stockData.likes,
             },
             {
-              stock: stockDataTwo.stock,
-              price: stockDataTwo.price,
-              rel_likes: stockDataTwo.likes - stockDataOne.likes,
+              stock: stockDataTwo.stockData.stock,
+              price: stockDataTwo.stockData.price,
+              rel_likes:
+                stockDataTwo.stockData.likes - stockDataOne.stockData.likes,
             },
           ],
         };
         return joinedStockData;
       }
-
-      // Handle request
-      let processedRequest;
-      try {
-        if (typeof sanitizedRequest.stock == "string") {
-          processedRequest = processAndReturnStockData(sanitizedRequest);
-        } else if (typeof sanitizedRequest.stock == "array") {
-          const stockDataOne = processAndReturnStockData(
-            sanitizedRequest.stock[0]
-          );
-          const stockDataTwo = processAndReturnStockData(
-            sanitizedRequest.stock[1]
-          );
-          processedRequest = joinMultipleStocks(stockDataOne, stockDataTwo);
-        }
-      } catch (e) {
-        throw new Error("Processing failed");
-      }
-      return processedRequest;
-    }
-
-    try {
-      validateRequest(req);
-      const sanitizedRequest = sanitizeRequest(req);
-      const processedRequest = processRequest(sanitizedRequest, req);
-      return processedRequest;
-    } catch (error) {
-      throw new Error(error);
     }
   }
 
-  app.get("/api/stock-prices?", async (req, res) => {
+  // TODO: Handle error codes
+  app.get("/api/stock-prices", async (req, res) => {
     try {
       const result = await handleStockPriceRequest(req);
       res.json(result);
-    } catch (e) {
+    } catch (error) {
       res.json("error");
     }
   });
