@@ -30,7 +30,6 @@ module.exports = function (app) {
       validateRequest(req);
       const sanitizedRequest = await sanitizeRequest(req);
       const processedRequest = await processRequest(sanitizedRequest, req);
-      console.log("processed requst:", processedRequest);
       return processedRequest;
     } catch (error) {
       throw new Error(error);
@@ -197,13 +196,12 @@ module.exports = function (app) {
     }
   }
 
-  // TODO: Handle error codes
   app.get("/api/stock-prices", async (req, res) => {
     try {
       const result = await handleStockPriceRequest(req);
-      res.json(result);
+      res.status(200).json(result);
     } catch (error) {
-      res.json("error");
+      res.status(500).json({ error: "Request failed" });
     }
   });
 };
