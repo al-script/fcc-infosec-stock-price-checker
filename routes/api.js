@@ -200,14 +200,63 @@ module.exports = function (app) {
       // {"stockData":{"stock":"GOOG","price":786.90,"likes":1}}
       // {"stockData":[{"stock":"MSFT","price":62.30,"rel_likes":-1},{"stock":"GOOG","price":786.90,"rel_likes":1}]}
 
-      async function viewStock(stockSymbol) {
+      async function getStockPrice(stockSymbol) {
         const stockDataApiUrl = `https://stock-price-checker-proxy.freecodecamp.rocks/v1/stock/${stockSymbol}/quote`;
-        let stockData = await fetch(stockDataApiUrl);
-        stockData = stockData.json().latestPrice;
-        return stockData;
+        const stockData = await fetch(stockDataApiUrl);
+        const stockPrice = stockData.json().latestPrice;
+        return stockPrice;
       }
-      async function likeStock(stock) {
-        async function handleIp(req) {}
+
+      async function handleStockDatabaseOperations(
+        stockSymbol,
+        like,
+        stockPrice,
+        req
+      ) {
+        // Does this save a reference, so if its changed can still reference this and access the change?
+        let stockDatabaseEntry = await Stock.findOne({ symbol: stockSymbol });
+        if (stockDatabaseEntry === null) {
+          const newStockDatabaseEntry = new Stock({
+            symbol: stockSymbol,
+            likes: 0,
+            IP: [""],
+          });
+          stockDatabaseEntry = await newStockDatabaseEntry.save();
+        }
+
+        if (like) {
+          await likeStock(req);
+        }
+
+        const stockObject = {
+          stock: stockSymbol,
+          price: stockPrice,
+          likes: stockDatabaseEntry.likes,
+        };
+
+        return stockObject;
+
+        async function likeStock(req) {
+          async function hashIp(req) {
+            const likerIp = req.socket.remoteAddress;
+            const hashedLikerIp = bcrypt.hashSync(likerIp, 12);
+            return hashedLikerIp;
+          }
+
+          const hashedLikerIp = await hashIp(req);
+
+          const alreadyLikedByIp = stockDatabaseEntry.IP.some((hash) => {
+            if (bcrypt.compareSync(hashedLikerIp, hash)) {
+              return true;
+            }
+          });
+
+          if (!alreadyLikedByIp) {
+            stockDatabaseEntry.IP.push(hashedLikerIp);
+            stockDatabaseEntry.likes++;
+            return await stockDatabaseEntry.save();
+          }
+        }
       }
 
       // Handle request
