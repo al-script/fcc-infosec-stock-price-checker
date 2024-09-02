@@ -154,9 +154,73 @@ module.exports = function (app) {
     }
   }
 
+  async function handleStockPriceRequest(req) {
+    async function validateRequest(req) {
+      // Example queries:
+      // { stock: 'GOOG' }
+      // { stock: 'GOOG', like: 'true' }
+      // { stock: [ 'GOOG', 'MSFT' ] }
+      // { stock: [ 'GOOG', 'MSFT' ], like: 'true' }
+
+      let validated;
+
+      // Handle validation
+      try {
+      } catch (e) {}
+
+      if (validated) {
+        return req;
+      } else {
+        throw new Error("Validation failed");
+      }
+    }
+    async function sanitizeRequest(req) {
+      let sanitized, sanitizedRequest;
+
+      // Handle sanization
+      try {
+      } catch (e) {}
+
+      if (sanitized) {
+        return sanitizedRequest;
+      } else {
+        throw new Error("Sanitization failed");
+      }
+    }
+    async function processRequest(req) {
+      // Handle one or two stocks
+      // Example return:
+      // {"stockData":{"stock":"GOOG","price":786.90,"likes":1}}
+      // {"stockData":[{"stock":"MSFT","price":62.30,"rel_likes":-1},{"stock":"GOOG","price":786.90,"rel_likes":1}]}
+
+      async function viewStock(stock) {}
+      async function likeStock(stock) {}
+
+      // Handle request
+      let processedRequest;
+      try {
+      } catch (e) {}
+    }
+
+    try {
+      const validatedRequest = validateRequest(req);
+      const sanitizedRequest = sanitizeRequest(validatedRequest);
+      const processedRequest = processRequest(sanitizedRequest);
+    } catch (error) {}
+  }
+
+  // app.get("/api/stock-prices?", async (req, res) => {
+  //   try {
+  //     const result = await handleStockPriceRequest(req);
+  //     res.json(result);
+  //   } catch (e) {
+  //     res.json("error");
+  //   }
+  // });
+
   app.route("/api/stock-prices").get(async function (req, res) {
-    // console.log("Requested stock:", req.query);
-    let result = await stockPriceHandler(req, res);
+    console.log(req.query);
+    let result = await stockPriceHandler(req);
     res.json(result);
   });
 };
