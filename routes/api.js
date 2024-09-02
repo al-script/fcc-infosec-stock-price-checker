@@ -194,17 +194,21 @@ module.exports = function (app) {
         throw new Error("Sanitization failed");
       }
     }
-    async function processRequest(req) {
+    async function processRequest(sanitizedRequest) {
       // Handle one or two stocks
       // Example return:
       // {"stockData":{"stock":"GOOG","price":786.90,"likes":1}}
       // {"stockData":[{"stock":"MSFT","price":62.30,"rel_likes":-1},{"stock":"GOOG","price":786.90,"rel_likes":1}]}
 
-      async function viewStock(stock) {}
+      async function viewStock(stockSymbol) {
+        const stockDataApiUrl = `https://stock-price-checker-proxy.freecodecamp.rocks/v1/stock/${stockSymbol}/quote`;
+        let stockData = await fetch(stockDataApiUrl);
+        stockData = stockData.json().latestPrice;
+        return stockData;
+      }
       async function likeStock(stock) {
         async function handleIp(req) {}
       }
-      
 
       // Handle request
       let processedRequest;
@@ -222,12 +226,12 @@ module.exports = function (app) {
     }
   }
 
-  app.get("/api/stock-prices?", async (req, res) => {
-    try {
-      const result = await handleStockPriceRequest(req);
-      res.json(result);
-    } catch (e) {
-      res.json("error");
-    }
-  });
+  // app.get("/api/stock-prices?", async (req, res) => {
+  //   try {
+  //     const result = await handleStockPriceRequest(req);
+  //     res.json(result);
+  //   } catch (e) {
+  //     res.json("error");
+  //   }
+  // });
 };
