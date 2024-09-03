@@ -67,12 +67,14 @@ module.exports = function (app) {
           stock: req.query.stock,
           like: req.query.like ? true : false,
         };
-      } catch (e) {}
+      } catch (e) {
+        sanitized = false;
+      }
 
-      if (sanitized) {
-        return sanitizedRequest;
-      } else {
+      if (!sanitized) {
         throw new Error("Sanitization failed");
+      } else {
+        return sanitizedRequest;
       }
     }
     async function processRequest(sanitizedRequest, req) {
@@ -118,7 +120,6 @@ module.exports = function (app) {
 
         return { stockData: stockDatabaseData };
       }
-
       async function getStockPrice(stockSymbol) {
         const stockDataApiUrl = `https://stock-price-checker-proxy.freecodecamp.rocks/v1/stock/${stockSymbol}/quote`;
         const response = await fetch(stockDataApiUrl);
@@ -126,14 +127,12 @@ module.exports = function (app) {
         const stockPrice = stockData.latestPrice;
         return stockPrice;
       }
-
       async function handleStockDatabaseOperations(
         stockSymbol,
         like,
         stockPrice,
         req
       ) {
-        // Does this save a reference, so if its changed can still reference this and access the change?
         let stockDatabaseEntry = await Stock.findOne({ symbol: stockSymbol });
         if (stockDatabaseEntry === null) {
           const newStockDatabaseEntry = new Stock({
