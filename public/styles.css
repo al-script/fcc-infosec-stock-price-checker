@@ -1,34 +1,3 @@
-/* #userstories {
-  margin-left: 5%;
-  margin-top: 5%;
-}
-
-.p-50 {
-  margin: 50px;
-}
-
-#testui {
-  margin-left: 5%;
-}
-
-.text-align-left {
-  text-align: left;
-}
-
-input[type='text'] {
-  width: 100px;
-}
-
-.m-50 {
-  margin: 50px;
-}
-
-.mt-200 {
-  margin-top: 200px;
-}
- */
-
-
 /****** Main Styling ******/
 
 body {
@@ -36,8 +5,8 @@ body {
   text-align: center;
 }
 
-.display-1 {
-  color: white;
+.title {
+  color: black;
 }
 
 .display-5 {
